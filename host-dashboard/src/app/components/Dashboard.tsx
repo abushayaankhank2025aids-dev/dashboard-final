@@ -13,6 +13,7 @@ export const Dashboard: FC = () => {
   const [alerts, setAlerts] = useState<SOSAlert[]>([]);
   const [rescuers, setRescuers] = useState<Rescuer[]>([]);
   const [selectedAlert, setSelectedAlert] = useState<SOSAlert | null>(null);
+  const [locateRequest, setLocateRequest] = useState(0);
 
   useEffect(() => {
     const BACKEND_API = "http://localhost:5000";
@@ -132,7 +133,12 @@ export const Dashboard: FC = () => {
     return (
       <div className="flex-1 flex overflow-hidden relative">
         <main className="flex-1 relative flex flex-col">
-          <MapSection alerts={alerts} rescuers={rescuers} selectedAlert={selectedAlert} />
+          <MapSection
+            alerts={alerts}
+            rescuers={rescuers}
+            selectedAlert={selectedAlert}
+            locateRequest={locateRequest}
+          />
           <BottomAnalytics />
         </main>
         
@@ -141,6 +147,10 @@ export const Dashboard: FC = () => {
           rescuers={rescuers}
           selectedAlert={selectedAlert}
           onSelectAlert={setSelectedAlert}
+          onLocateAlert={(alert) => {
+            setSelectedAlert(alert);
+            setLocateRequest((request) => request + 1);
+          }}
           onAssign={handleAssign}
         />
       </div>

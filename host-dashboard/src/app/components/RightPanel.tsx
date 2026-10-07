@@ -8,10 +8,11 @@ interface RightPanelProps {
   rescuers: Rescuer[];
   selectedAlert: SOSAlert | null;
   onSelectAlert: (alert: SOSAlert) => void;
+  onLocateAlert: (alert: SOSAlert) => void;
   onAssign: (alertId: string, rescuerId: string) => void;
 }
 
-export const RightPanel: FC<RightPanelProps> = ({ alerts, rescuers, selectedAlert, onSelectAlert, onAssign }) => {
+export const RightPanel: FC<RightPanelProps> = ({ alerts, rescuers, selectedAlert, onSelectAlert, onLocateAlert, onAssign }) => {
   const [assignMode, setAssignMode] = useState<string | null>(null);
 
   const activeAlerts = alerts.filter(a => a.status !== "RESOLVED");
@@ -78,6 +79,10 @@ export const RightPanel: FC<RightPanelProps> = ({ alerts, rescuers, selectedAler
 
                   <div className="flex gap-2 mt-2">
                     <button 
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onLocateAlert(alert);
+                      }}
                       className="flex-1 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold py-2 rounded-lg transition-colors border border-slate-700 hover:border-slate-600 flex items-center justify-center gap-1.5"
                     >
                       <Crosshair className="w-3.5 h-3.5" /> Locate
